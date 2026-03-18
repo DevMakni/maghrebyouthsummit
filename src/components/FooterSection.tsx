@@ -20,9 +20,7 @@ const FooterSection = () => (
           <h4 className="font-display font-bold text-white mb-4">Contact</h4>
           <div className="flex items-center gap-2 text-sm text-white/60">
             <Phone className="w-4 h-4 text-primary" strokeWidth={1.5} />
-            +216 52 053 438
-            +216 58 410 458
-
+            +216 55 080 321 
           </div>
           <div className="flex items-center gap-2 text-sm text-white/60">
             <Mail className="w-4 h-4 text-primary" strokeWidth={1.5} />
