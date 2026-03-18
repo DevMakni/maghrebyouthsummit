@@ -1,0 +1,58 @@
+import { motion } from "framer-motion";
+
+const cards = [
+  { title: "Next-Gen Leaders",  desc: "Develop the next generation of leaders across the Maghreb region" },
+  { title: "Entrepreneurship", desc: "Foster entrepreneurship and innovation among young minds" },
+  { title: "Future-Ready",      desc: "Prepare youth for future careers and emerging technologies" },
+  { title: "Bridge the Gap",    desc: "Connect youth with companies and institutions for real impact" },
+];
+
+const AboutSection = () => (
+  <section id="about" className="relative py-24 md:py-32">
+    <div className="absolute inset-0 section-overlay" />
+    <div className="container mx-auto px-6 relative z-10">
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 0.6, ease: [0.2, 0, 0, 1] }}
+        className="max-w-3xl mx-auto text-center mb-20"
+      >
+        <h2 className="font-display font-black text-4xl md:text-6xl tracking-tighter text-white mb-6 text-glow-white">
+          What is the Maghreb Youth Summit?
+        </h2>
+        <p className="text-lg text-white/70 leading-relaxed">
+          The Maghreb Youth Summit 2026 is a large-scale youth gathering bringing together students, high schoolers, innovators, entrepreneurs and young leaders from across Tunisia and the Maghreb region.
+          Combining conferences, hackathons, training programs, innovation labs and networking experiences within a dynamic multi-track program.
+        </p>
+      </motion.div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+        {cards.map((card, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.55, delay: i * 0.1, ease: [0.2, 0, 0, 1] }}
+            whileHover={{ y: -8, transition: { duration: 0.3 } }}
+            className="group relative card-glass rounded-2xl p-7 cursor-default overflow-hidden flex flex-col items-center text-center"
+          >
+            {/* top accent line */}
+            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/60 to-transparent" />
+
+            {/* subtle red glow blob */}
+            <div className="absolute -top-8 left-1/2 -translate-x-1/2 w-24 h-24 bg-primary/10 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+            <h3 className="font-display font-bold text-base md:text-lg text-white mb-2 leading-tight">
+              {card.title}
+            </h3>
+            <p className="text-sm text-white/55 leading-relaxed">{card.desc}</p>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  </section>
+);
+
+export default AboutSection;
