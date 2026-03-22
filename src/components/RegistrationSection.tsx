@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect, FormEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
+import InvitationCard from "@/components/InvitationCard";
 
 const trackOptions = [
   "Entrepreneurship Program",
@@ -99,6 +100,9 @@ const RegistrationSection = () => {
   const [error, setError] = useState("");
   const [track, setTrack] = useState("");
   const [source, setSource] = useState("");
+  const [showInvitation, setShowInvitation] = useState(false);
+  const [invitationName, setInvitationName] = useState("");
+  const [invitationTrack, setInvitationTrack] = useState("");
   const [formData, setFormData] = useState({
     fullName: "",
     age: "",
@@ -132,6 +136,9 @@ const RegistrationSection = () => {
         mode: "no-cors",
       });
       setSubmitted(true);
+      setInvitationName(formData.fullName);
+      setInvitationTrack(track || "Young Leader");
+      setShowInvitation(true);
     } catch {
       setError("Something went wrong. Please try again.");
     } finally {
@@ -140,6 +147,7 @@ const RegistrationSection = () => {
   };
 
   return (
+    <>
     <section id="register" className="relative py-24 md:py-32">
       <div className="absolute inset-0 section-overlay-strong" />
       <div className="container mx-auto px-6 relative z-10">
@@ -223,6 +231,17 @@ const RegistrationSection = () => {
         </div>
       </div>
     </section>
+
+    <AnimatePresence>
+      {showInvitation && (
+        <InvitationCard
+          name={invitationName}
+          track={invitationTrack}
+          onClose={() => setShowInvitation(false)}
+        />
+      )}
+    </AnimatePresence>
+    </>
   );
 };
 

@@ -1,11 +1,6 @@
 import { motion } from "framer-motion";
 import logoWhite from "@/assets/logo-white.png";
-
-const stats = [
-  { value: "2000+", label: "Participants" },
-  { value: "5M", label: "Reach" },
-  { value: "40+", label: "Partners" },
-];
+  
 
 const fadeUp = {  
   hidden: { opacity: 0, y: 40 },
@@ -59,7 +54,7 @@ const HeroSection = () => {
             className="text-lg md:text-xl text-white/70 font-medium tracking-wide"
           >
             2026 — Monastir, Tunisia
-          </motion.p>
+          </motion.p> 
 
           <motion.div
             custom={4}
