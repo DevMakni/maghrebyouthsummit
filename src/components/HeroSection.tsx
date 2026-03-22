@@ -62,24 +62,6 @@ const HeroSection = () => {
           </motion.p>
 
           <motion.div
-            custom={3}
-            
-            className="flex items-center justify-center gap-6 md:gap-10 text-sm md:text-base font-medium pt-4"
-          >
-            {stats.map((stat, i) => (
-              <motion.div
-                key={i}
-                className="flex items-center gap-2"
-                whileHover={{ scale: 1.05 }}
-              >
-                <span className="text-white font-bold tabular-nums">{stat.value}</span>
-                <span className="text-white/60">{stat.label}</span>
-                {i < stats.length - 1 && <span className="ml-4 text-white/20">·</span>}
-              </motion.div>
-            ))}
-          </motion.div>
-
-          <motion.div
             custom={4}
            
             className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-6"
