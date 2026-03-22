@@ -320,7 +320,6 @@ const InvitationCard = ({ name, track = "Young Leader", onClose }: InvitationCar
             className="w-full flex flex-col items-center gap-4 text-center"
           >
             <div>
-              <p className="text-white font-bold text-lg mb-1">Your invitation is ready 🎉</p>
               <p className="text-white/55 text-sm">Share it directly or download to your device</p>
             </div>
 
