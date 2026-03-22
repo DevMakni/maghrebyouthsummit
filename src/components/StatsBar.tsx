@@ -11,8 +11,8 @@ const stats = [
 const StatsBar = () => (
   <section className="relative py-16">
     <div className="absolute inset-0 section-overlay-strong" />
-    <div className="container mx-auto px-6 relative z-10">
-      <div className="flex flex-wrap items-center justify-center gap-8 md:gap-16">
+    <div className="container mx-auto px-8 md:px-6 relative z-10">
+      <div className="grid grid-cols-2 md:flex md:flex-wrap items-center justify-center gap-8 md:gap-16">
         {stats.map((stat, i) => (
           <motion.div
             key={i}

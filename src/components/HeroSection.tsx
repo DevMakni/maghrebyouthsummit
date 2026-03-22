@@ -3,7 +3,7 @@ import logoWhite from "@/assets/logo-white.png";
 
 const stats = [
   { value: "2000+", label: "Participants" },
-  { value: "5M", label: "Reach in social media" },
+  { value: "5M", label: "Reach" },
   { value: "40+", label: "Partners" },
 ];
 
