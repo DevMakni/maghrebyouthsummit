@@ -17,7 +17,6 @@ const Index = () => (
     <AboutSection />
     <StatsBar />
     <ProgramSection />
-    <HackathonOverview />
     <VenueSection />
     <RegistrationSection />
     <FooterSection />
