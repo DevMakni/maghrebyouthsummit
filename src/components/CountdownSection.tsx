@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { useLanguage } from "@/context/LanguageContext";
+import { translations } from "@/lib/translations";
 
 interface TimeLeft {
   days: number;
@@ -29,9 +31,10 @@ interface CountdownRowProps {
   subtitle: string;
   target: Date;
   accent?: boolean;
+  unitLabels: { days: string; hours: string; minutes: string; seconds: string };
 }
 
-const CountdownRow = ({ label, subtitle, target, accent }: CountdownRowProps) => {
+const CountdownRow = ({ label, subtitle, target, accent, unitLabels }: CountdownRowProps) => {
   const [time, setTime] = useState<TimeLeft>(getTimeLeft(target));
 
   useEffect(() => {
@@ -40,10 +43,10 @@ const CountdownRow = ({ label, subtitle, target, accent }: CountdownRowProps) =>
   }, [target]);
 
   const units: { key: keyof TimeLeft; label: string }[] = [
-    { key: "days", label: "Days" },
-    { key: "hours", label: "Hours" },
-    { key: "minutes", label: "Minutes" },
-    { key: "seconds", label: "Seconds" },
+    { key: "days", label: unitLabels.days },
+    { key: "hours", label: unitLabels.hours },
+    { key: "minutes", label: unitLabels.minutes },
+    { key: "seconds", label: unitLabels.seconds },
   ];
 
   return (
@@ -83,7 +86,11 @@ const CountdownRow = ({ label, subtitle, target, accent }: CountdownRowProps) =>
   );
 };
 
-const CountdownSection = () => (
+const CountdownSection = () => {
+  const { lang } = useLanguage();
+  const t = translations[lang].countdown;
+  const unitLabels = { days: t.days, hours: t.hours, minutes: t.minutes, seconds: t.seconds };
+  return (
   <section className="relative py-20 md:py-28">
     <div className="absolute inset-0 section-overlay" />
     <div className="container mx-auto px-6 max-w-3xl relative z-10">
@@ -95,7 +102,7 @@ const CountdownSection = () => (
         className="space-y-10"
       >
         <h2 className="font-display font-black text-4xl md:text-6xl tracking-tighter text-white text-center text-glow-white">
-          Don't Miss Out
+          {t.dontMissOut}
         </h2>
 
         {/* Payment deadline — accent style */}
@@ -106,10 +113,11 @@ const CountdownSection = () => (
           transition={{ duration: 0.5, delay: 0.15 }}
         >
           <CountdownRow
-            label="Payment Closing"
-            subtitle="April 5, 2026"
+            label={t.paymentClosing}
+            subtitle={t.paymentDate}
             target={PAYMENT_CLOSE}
             accent
+            unitLabels={unitLabels}
           />
         </motion.div>
 
@@ -121,14 +129,16 @@ const CountdownSection = () => (
           transition={{ duration: 0.5, delay: 0.3 }}
         >
           <CountdownRow
-            label="Event Starts"
-            subtitle="April 10, 2026"
+            label={t.eventStarts}
+            subtitle={t.eventDate}
             target={EVENT_DATE}
+            unitLabels={unitLabels}
           />
         </motion.div>
       </motion.div>
     </div>
   </section>
-);
+  );
+};
 
 export default CountdownSection;

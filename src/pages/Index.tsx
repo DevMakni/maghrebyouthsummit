@@ -4,7 +4,6 @@ import CountdownSection from "@/components/CountdownSection";
 import AboutSection from "@/components/AboutSection";
 import StatsBar from "@/components/StatsBar";
 import ProgramSection from "@/components/ProgramSection";
-import HackathonOverview from "@/components/HackathonOverview";
 import VenueSection from "@/components/VenueSection";
 import RegistrationSection from "@/components/RegistrationSection";
 import FooterSection from "@/components/FooterSection";

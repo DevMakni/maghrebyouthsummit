@@ -2,21 +2,8 @@ import { useState, useRef, useEffect, FormEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import InvitationCard from "@/components/InvitationCard";
-
-const trackOptions = [
-  "Entrepreneurship Program",
-  "Entrepreneurship Hackathon",
-  "Innovation, Digital & AI 2030",
-  "High School Program",
-];
-
-const sourceOptions = [
-  "Social Media",
-  "Friend / Word of Mouth",
-  "University / School",
-  "Email",
-  "Other",
-];
+import { useLanguage } from "@/context/LanguageContext";
+import { translations } from "@/lib/translations";
 
 const inputClass =
   "w-full bg-white/5 border-none ring-1 ring-white/10 rounded-lg px-4 py-3 text-white placeholder:text-white/40 focus:ring-2 focus:ring-primary outline-none transition-all text-sm";
@@ -95,6 +82,8 @@ const SHEET_API_URL =
   "https://script.google.com/macros/s/AKfycbzcEB_4pMH_Enjf3SAX0cSPFlMG_0lsucyOEBH6jX4n8a6APdo4i9Bt6VWgaBcGkgv5PQ/exec";
 
 const RegistrationSection = () => {
+  const { lang } = useLanguage();
+  const t = translations[lang].registration;
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -140,7 +129,7 @@ const RegistrationSection = () => {
       setInvitationTrack(track || "Young Leader");
       setShowInvitation(true);
     } catch {
-      setError("Something went wrong. Please try again.");
+      setError(t.error);
     } finally {
       setLoading(false);
     }
@@ -157,7 +146,7 @@ const RegistrationSection = () => {
           viewport={{ once: true }}
           className="font-display font-black text-4xl md:text-6xl tracking-tighter text-white text-center mb-16 text-glow-white"
         >
-          Register Now
+          {t.heading}
         </motion.h2>
 
         <div className="max-w-2xl mx-auto">
@@ -175,10 +164,10 @@ const RegistrationSection = () => {
                   </svg>
                 </div>
                 <h3 className="font-display font-bold text-2xl text-white mb-3">
-                  Registration Received
+                  {t.successTitle}
                 </h3>
                 <p className="text-white/60">
-                  Your registration has been received. We will contact you soon.
+                  {t.successBody}
                 </p>
               </motion.div>
             ) : (
@@ -191,25 +180,25 @@ const RegistrationSection = () => {
                 className="card-glass rounded-2xl p-8 md:p-12 space-y-5"
               >
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                  <input name="fullName" required placeholder="Full Name" className={inputClass} value={formData.fullName} onChange={handleChange} />
-                  <input name="age" required type="number" min={14} max={40} placeholder="Age" className={inputClass} value={formData.age} onChange={handleChange} />
+                  <input name="fullName" required placeholder={t.fullName} className={inputClass} value={formData.fullName} onChange={handleChange} />
+                  <input name="age" required type="number" min={14} max={40} placeholder={t.age} className={inputClass} value={formData.age} onChange={handleChange} />
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                  <input name="email" required type="email" placeholder="Email" className={inputClass} value={formData.email} onChange={handleChange} />
-                  <input name="phone" required type="tel" placeholder="Phone Number" className={inputClass} value={formData.phone} onChange={handleChange} />
+                  <input name="email" required type="email" placeholder={t.email} className={inputClass} value={formData.email} onChange={handleChange} />
+                  <input name="phone" required type="tel" placeholder={t.phone} className={inputClass} value={formData.phone} onChange={handleChange} />
                 </div>
-                <input name="city" required placeholder="City / Country" className={inputClass} value={formData.city} onChange={handleChange} />
+                <input name="city" required placeholder={t.city} className={inputClass} value={formData.city} onChange={handleChange} />
                 <CustomSelect
                   name="track"
-                  placeholder="Select Program Track"
-                  options={trackOptions}
+                  placeholder={t.trackPlaceholder}
+                  options={t.tracks}
                   value={track}
                   onChange={setTrack}
                 />
                 <CustomSelect
                   name="source"
-                  placeholder="How did you hear about us?"
-                  options={sourceOptions}
+                  placeholder={t.sourcePlaceholder}
+                  options={t.sources}
                   value={source}
                   onChange={setSource}
                 />
@@ -223,7 +212,7 @@ const RegistrationSection = () => {
                   disabled={loading}
                   className="w-full bg-primary text-white font-bold py-4 rounded-full text-base shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 hover:scale-[1.02] transition-all active:scale-[0.98] disabled:opacity-50"
                 >
-                  {loading ? "Submitting..." : "Confirm Registration"}
+                  {loading ? t.submitting : t.confirm}
                 </button>
               </motion.form>
             )}

@@ -1,5 +1,7 @@
 import { motion } from "framer-motion";
 import logoWhite from "@/assets/logo-white.png";
+import { useLanguage } from "@/context/LanguageContext";
+import { translations } from "@/lib/translations";
   
 
 const fadeUp = {  
@@ -12,6 +14,8 @@ const fadeUp = {
 };
 
 const HeroSection = () => {
+  const { lang } = useLanguage();
+  const t = translations[lang].hero;
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Overlay for readability */}
@@ -67,7 +71,7 @@ const HeroSection = () => {
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.97 }}
             >
-              Secure Your Seat
+              {t.secureYourSeat}
             </motion.a>
             <motion.a
               href="#about"
@@ -75,7 +79,7 @@ const HeroSection = () => {
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.97 }}
             >
-              Discover the Event
+              {t.discoverEvent}
             </motion.a>
           </motion.div>
         </motion.div>

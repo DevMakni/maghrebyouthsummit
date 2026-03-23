@@ -1,7 +1,12 @@
 import logoWhite from "@/assets/logo-white.png";
 import { Mail, Phone, MapPin } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
+import { translations } from "@/lib/translations";
 
-const FooterSection = () => (
+const FooterSection = () => {
+  const { lang } = useLanguage();
+  const t = translations[lang].footer;
+  return (
   <footer className="relative py-16">
     <div className="absolute inset-0 section-overlay-strong" />
     <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
@@ -10,14 +15,12 @@ const FooterSection = () => (
         <div>
           <img src={logoWhite} alt="Maghreb Youth Summit" className="h-8 mb-4 opacity-90" />
           <p className="text-sm text-white/50 leading-relaxed">
-            Maghreb Youth Summit 2026 — Monastir, Tunisia.
-            <br />
-            The Maghreb Youth Summit is founded by the Maghreb Youth & Student Union and organized by Tunivisions Foundation and Epik Leaders Tunisia 
+            {t.description.split('\n').map((line, i) => (<span key={i}>{line}{i === 0 && <br />}</span>))}
           </p>
         </div>
 
         <div className="space-y-3">
-          <h4 className="font-display font-bold text-white mb-4">Contact</h4>
+          <h4 className="font-display font-bold text-white mb-4">{t.contact}</h4>
           <div className="flex items-center gap-2 text-sm text-white/60">
             <Phone className="w-4 h-4 text-primary" strokeWidth={1.5} />
             +216 55 080 321 
@@ -37,11 +40,11 @@ const FooterSection = () => (
         </div>
 
         <div className="space-y-3">
-          <h4 className="font-display font-bold text-white mb-4">Quick Links</h4>
-          {["About", "Program", "Venue", "Register"].map((link) => (
+          <h4 className="font-display font-bold text-white mb-4">{t.quickLinks}</h4>
+          {t.links.map((link, i) => (
             <a
               key={link}
-              href={`#${link.toLowerCase()}`}
+              href={`#${["about", "program", "venue", "register"][i]}`}
               className="block text-sm text-white/50 hover:text-white transition-colors duration-300"
             >
               {link}
@@ -52,7 +55,7 @@ const FooterSection = () => (
 
       <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
         <p className="text-xs text-white/40">
-          2026 Maghreb Youth Summit. All rights reserved.
+          {t.copyright}
         </p>
         <div className="flex items-center gap-4">
           {/* Instagram */}
@@ -83,6 +86,7 @@ const FooterSection = () => (
       </div>
     </div>
   </footer>
-);
+  );
+};
 
 export default FooterSection;

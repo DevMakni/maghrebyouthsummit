@@ -2,25 +2,23 @@ import { motion } from "framer-motion";
 import { MapPin } from "lucide-react";
 import amirPalaceImg from "@/assets/Amirpalace.jpg";
 import shemsHolidayImg from "@/assets/shemsholiday.jpg";
+import { useLanguage } from "@/context/LanguageContext";
+import { translations } from "@/lib/translations";
 
-const venues = [
-  {
-    name: "Amir Palace",
-    location: "Monastir",
-    tag: "Primary Hub",
-    details: "High School Program, Awards, Orientation Village",
-    image: amirPalaceImg,
-  },
-  {
-    name: "Shems Holidays",
-    location: "Monastir",
-    tag: "Innovation Campus",
-    details: "Opening Ceremony, Entrepreneurship Program, Hackathon, AI & Digital Program, University Awards",
-    image: shemsHolidayImg,
-  },
-];
+const venueNames = ["Amir Palace", "Shems Holidays"];
+const venueLocations = ["Monastir", "Monastir"];
+const venueImages = [amirPalaceImg, shemsHolidayImg];
 
-const VenueSection = () => (
+const VenueSection = () => {
+  const { lang } = useLanguage();
+  const t = translations[lang].venue;
+  const venues = t.venues.map((v, i) => ({
+    ...v,
+    name: venueNames[i],
+    location: venueLocations[i],
+    image: venueImages[i],
+  }));
+  return (
   <section id="venue" className="relative py-24 md:py-32">
     <div className="absolute inset-0 section-overlay" />
     <div className="container mx-auto px-6 relative z-10">
@@ -30,7 +28,7 @@ const VenueSection = () => (
         viewport={{ once: true }}
         className="font-display font-black text-4xl md:text-6xl tracking-tighter text-white text-center mb-16 text-glow-white"
       >
-        Where
+        {t.heading}
       </motion.h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
@@ -67,6 +65,7 @@ const VenueSection = () => (
       </div>
     </div>
   </section>
-);
+  );
+};
 
 export default VenueSection;

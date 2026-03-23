@@ -1,14 +1,14 @@
 import { motion } from "framer-motion";
+import { useLanguage } from "@/context/LanguageContext";
+import { translations } from "@/lib/translations";
 
-const stats = [
-  { value: "+2000", label: "Participants" },
-  { value: "+35", label: "Mentors & Speakers" },
-  { value: "+40", label: "Companies & Partners" },
-  { value: "4", label: "Program Tracks" },
-  { value: "5M", label: "Reach on social media" },
-];
+const statValues = ["+2000", "+35", "+40", "4", "5M"];
 
-const StatsBar = () => (
+const StatsBar = () => {
+  const { lang } = useLanguage();
+  const labels = translations[lang].stats.labels;
+  const stats = statValues.map((value, i) => ({ value, label: labels[i] }));
+  return (
   <section className="relative py-16">
     <div className="absolute inset-0 section-overlay-strong" />
     <div className="container mx-auto px-8 md:px-6 relative z-10">
@@ -32,6 +32,7 @@ const StatsBar = () => (
       </div>
     </div>
   </section>
-);
+  );
+};
 
 export default StatsBar;

@@ -1,23 +1,16 @@
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { Zap, Users, Clock, Trophy, Target, ArrowRight, Rocket } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
+import { translations } from "@/lib/translations";
 
-const stats = [
-  { icon: Users, value: "20-30", label: "Equipes" },
-  { icon: Clock, value: "24H", label: "Non-Stop" },
-  { icon: Target, value: "3-5", label: "Par equipe" },
-  { icon: Trophy, value: "1", label: "Champion" },
-];
-
-const highlights = [
-  "Theme revele le soir meme — effet de surprise garanti",
-  "3 checkpoints d'elimination progressifs en 24h",
-  "Pitch final de 7 min devant un jury de 5 experts",
-  "Prix, certificats et acces reseau mentors regionaux",
-];
+const statIcons = [Users, Clock, Target, Trophy];
 
 const HackathonOverview = () => {
   const navigate = useNavigate();
+  const { lang } = useLanguage();
+  const t = translations[lang].hackathon;
+  const stats = t.stats.map((s, i) => ({ ...s, icon: statIcons[i] }));
 
   return (
     <section id="hackathon" className="relative py-24 md:py-32 overflow-hidden">
@@ -36,7 +29,7 @@ const HackathonOverview = () => {
             className="inline-flex items-center gap-2 bg-primary/10 ring-1 ring-primary/25 rounded-full px-5 py-2 text-xs font-bold tracking-widest uppercase text-primary mb-6"
           >
             <Zap className="w-3.5 h-3.5" />
-            Parcours 2 — Hackathon
+            {t.badge}
           </motion.div>
 
           <motion.h2
@@ -46,8 +39,8 @@ const HackathonOverview = () => {
             transition={{ duration: 0.6 }}
             className="font-display font-black text-4xl md:text-6xl tracking-tighter mb-6"
           >
-            <span className="text-white text-glow-white">ONE OF </span>
-            <span className="text-primary text-glow">HUNDRED</span>
+            <span className="text-white text-glow-white">{t.headingWhite}</span>
+            <span className="text-primary text-glow">{t.headingRed}</span>
           </motion.h2>
 
           <motion.p
@@ -57,9 +50,8 @@ const HackathonOverview = () => {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="text-lg md:text-xl text-white/60 leading-relaxed max-w-3xl mx-auto"
           >
-            Un hackathon business de 24 heures concu pour identifier, tester et reveler
-            les futurs leaders entrepreneurs de la region Maghrebine. Parmi des dizaines d'equipes,
-            <span className="text-primary font-semibold"> une seule se distinguera</span>.
+            {t.description}
+            <span className="text-primary font-semibold">{t.descriptionHighlight}</span>.
           </motion.p>
         </div>
 
@@ -90,14 +82,9 @@ const HackathonOverview = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="card-glass rounded-2xl p-8 ring-1 ring-white/10"
           >
-            <h3 className="font-display font-bold text-xl text-white mb-5">Comment ca marche ?</h3>
+            <h3 className="font-display font-bold text-xl text-white mb-5">{t.howItWorks}</h3>
             <div className="space-y-4">
-              {[
-                { step: "01", title: "Pre-Selection", desc: "Candidatures evaluees, 20-30 equipes retenues." },
-                { step: "02", title: "Revelation du Theme", desc: "Theme devoile le soir du 10 avril — effet surprise." },
-                { step: "03", title: "24H de Hackathon", desc: "Construction du BMC, 3 checkpoints d'elimination." },
-                { step: "04", title: "Pitch Final", desc: "7 min devant le jury, deliberation et remise des prix." },
-              ].map((item, i) => (
+              {t.steps.map((item, i) => (
                 <div key={i} className="flex items-start gap-4">
                   <span className="flex items-center justify-center w-9 h-9 rounded-lg bg-primary/15 text-primary text-xs font-bold shrink-0">
                     {item.step}
@@ -120,9 +107,9 @@ const HackathonOverview = () => {
             className="card-glass rounded-2xl p-8 ring-1 ring-primary/20 relative overflow-hidden"
           >
             <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-primary/60 to-primary/20" />
-            <h3 className="font-display font-bold text-xl text-white mb-5">Pourquoi participer ?</h3>
+            <h3 className="font-display font-bold text-xl text-white mb-5">{t.whyJoin}</h3>
             <ul className="space-y-4 mb-6">
-              {highlights.map((h, i) => (
+              {t.highlights.map((h, i) => (
                 <li key={i} className="flex items-start gap-3 text-sm text-white/65 leading-relaxed">
                   <div className="w-5 h-5 rounded-md bg-primary/15 flex items-center justify-center shrink-0 mt-0.5">
                     <Zap className="w-3 h-3 text-primary" />
@@ -133,7 +120,7 @@ const HackathonOverview = () => {
             </ul>
             <div className="flex items-center gap-2 text-xs text-white/40 bg-white/5 rounded-lg px-4 py-3">
               <Target className="w-4 h-4 text-primary shrink-0" />
-              <span>Domaines : Tech & Digital · Entrepreneuriat Social · AgriFood & Environnement</span>
+              <span>{t.domains}</span>
             </div>
           </motion.div>
         </div>
@@ -151,13 +138,13 @@ const HackathonOverview = () => {
             className="inline-flex items-center justify-center gap-2 bg-primary text-white font-bold px-8 py-4 rounded-full shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/35 hover:scale-105 transition-all duration-300 active:scale-95"
           >
             <Rocket className="w-5 h-5" />
-            Register Now
+            {t.registerNow}
           </a>
           <button
             onClick={() => navigate("/paths/hackathon")}
             className="inline-flex items-center justify-center gap-2 bg-white/10 text-white font-bold px-8 py-4 rounded-full ring-1 ring-white/20 hover:bg-white/15 hover:scale-105 transition-all duration-300 active:scale-95 cursor-pointer"
           >
-            More Details
+            {t.moreDetails}
             <ArrowRight className="w-5 h-5" />
           </button>
         </motion.div>

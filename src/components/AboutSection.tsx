@@ -1,13 +1,11 @@
 import { motion } from "framer-motion";
+import { useLanguage } from "@/context/LanguageContext";
+import { translations } from "@/lib/translations";
 
-const cards = [
-  { title: "Next-Gen Leaders",  desc: "Develop the next generation of leaders across the Maghreb region" },
-  { title: "Entrepreneurship", desc: "Foster entrepreneurship and innovation among young minds" },
-  { title: "Future-Ready",      desc: "Prepare youth for future careers and emerging technologies" },
-  { title: "Bridge the Gap",    desc: "Connect youth with companies and institutions for real impact" },
-];
-
-const AboutSection = () => (
+const AboutSection = () => {
+  const { lang } = useLanguage();
+  const t = translations[lang].about;
+  return (
   <section id="about" className="relative py-24 md:py-32">
     <div className="absolute inset-0 section-overlay" />
     <div className="container mx-auto px-6 relative z-10">
@@ -19,16 +17,15 @@ const AboutSection = () => (
         className="max-w-3xl mx-auto text-center mb-20"
       >
         <h2 className="font-display font-black text-4xl md:text-6xl tracking-tighter text-white mb-6 text-glow-white">
-          What is the Maghreb Youth Summit?
+          {t.heading}
         </h2>
         <p className="text-lg text-white/70 leading-relaxed">
-          The Maghreb Youth Summit 2026 is a large-scale youth gathering bringing together students, high schoolers, innovators, entrepreneurs and young leaders from across Tunisia and the Maghreb region.
-          Combining conferences, hackathons, training programs, innovation labs and networking experiences within a dynamic multi-track program.
+          {t.body}
         </p>
       </motion.div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-        {cards.map((card, i) => (
+        {t.cards.map((card, i) => (
           <motion.div
             key={i}
             initial={{ opacity: 0, y: 40 }}
@@ -53,6 +50,7 @@ const AboutSection = () => (
       </div>
     </div>
   </section>
-);
+  );
+};
 
 export default AboutSection;

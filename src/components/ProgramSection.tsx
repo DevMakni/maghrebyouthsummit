@@ -3,31 +3,16 @@ import entrepreneurshipImg from "@/assets/entrepreuneurship.jpg";
 import hackathonImg from "@/assets/hackton.jpg";
 import aiImg from "@/assets/ai.jpg";
 import highschoolImg from "@/assets/highschool.jpg";
+import { useLanguage } from "@/context/LanguageContext";
+import { translations } from "@/lib/translations";
 
-const tracks = [
-  {
-    image: entrepreneurshipImg,
-    title: "Entrepreneurship Program",
-    desc: "Conferences, panels, workshops, innovation labs and high level networking sessions with 1000+ attendees, 30+ speakers and 20+ companies",
-  },
-  {
-    image: hackathonImg,
-    title: "Entrepreneurship Hackathon",
-    desc: "24h challenge with 20-30 teams across 3 innovation themesn judged by 5 experts with prizes and incubation opportunities",
-  },
-  {
-    image: aiImg,
-    title: "Innovation, Digital & AI 2030",
-    desc: "AI & robotics labs, startup expo, investor networking and cutting edge digital sessions covering the future of work, emerging technologies and digital transformation",
-  },
-  {
-    image: highschoolImg,
-    title: "High School Program",
-    desc: "Content creation, project development, personal growth and leadership workshops for 700+ high school students from across the Maghreb region with dedicated mentorship and support from our partners",
-  },
-];
+const trackImages = [entrepreneurshipImg, hackathonImg, aiImg, highschoolImg];
 
-const ProgramSection = () => (
+const ProgramSection = () => {
+  const { lang } = useLanguage();
+  const t = translations[lang].program;
+  const tracks = t.tracks.map((track, i) => ({ ...track, image: trackImages[i] }));
+  return (
   <section id="program" className="relative py-24 md:py-32">
     <div className="absolute inset-0 section-overlay" />
     <div className="container mx-auto px-6 relative z-10">
@@ -38,7 +23,7 @@ const ProgramSection = () => (
         transition={{ duration: 0.6 }}
         className="font-display font-black text-4xl md:text-6xl tracking-tighter text-white text-center mb-16 text-glow-white"
       >
-        4 Program Tracks
+        {t.heading}
       </motion.h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
@@ -68,6 +53,7 @@ const ProgramSection = () => (
       </div>
     </div>
   </section>
-);
+  );
+};
 
 export default ProgramSection;
