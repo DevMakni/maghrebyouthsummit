@@ -1,10 +1,17 @@
 export const translations = {
   en: {
     navbar: {
-      about: "About",
-      program: "Program",
-      venue: "Venue",
-      register: "Register",
+      aPropos: "About",
+      aProposItems: [
+        { label: "Maghreb Youth Summit", href: "#hero" },
+        { label: "What to Expect", href: "#program" },
+        { label: "Venue",          href: "#venue" },
+        { label: "Partners",  href: "#partners" },
+      ],
+      programme: "Program",
+      speakers: "Speakers",
+      exposant: "Exposant",
+      comingSoon: "Coming Soon",
       registerNow: "Register Now",
     },
     hero: {
@@ -36,7 +43,7 @@ export const translations = {
       labels: ["Participants", "Mentors & Speakers", "Companies & Partners", "Program Tracks", "Reach on social media"],
     },
     program: {
-      heading: "4 Program Tracks",
+      heading: "What to Expect",
       tracks: [
         {
           title: "Entrepreneurship Program",
@@ -139,10 +146,17 @@ export const translations = {
 
   fr: {
     navbar: {
-      about: "À propos",
-      program: "Programme",
-      venue: "Lieu",
-      register: "S'inscrire",
+      aPropos: "À propos",
+      aProposItems: [
+        { label: "Maghreb Youth Summit",   href: "#hero" },
+        { label: "Ce qui vous attend",     href: "#program" },
+        { label: "Lieu",                   href: "#venue" },
+        { label: "Partenaires",            href: "#partners" },
+      ],
+      programme: "Programme",
+      speakers: "Speakers",
+      exposant: "Exposant",
+      comingSoon: "Bientôt",
       registerNow: "S'inscrire",
     },
     hero: {
@@ -174,7 +188,7 @@ export const translations = {
       labels: ["Participants", "Mentors & Intervenants", "Entreprises & Partenaires", "Parcours", "Portée sur les réseaux sociaux"],
     },
     program: {
-      heading: "4 Parcours",
+      heading: "Ce qui vous attend",
       tracks: [
         {
           title: "Programme Entrepreneuriat",

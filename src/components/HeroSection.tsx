@@ -17,7 +17,7 @@ const HeroSection = () => {
   const { lang } = useLanguage();
   const t = translations[lang].hero;
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Overlay for readability */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/60" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_hsl(355_75%_50%_/_0.08)_0%,_transparent_60%)]" />
