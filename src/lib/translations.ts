@@ -1,17 +1,10 @@
 export const translations = {
   en: {
     navbar: {
-      aPropos: "A Propos",
-      aProposItems: [
-        { label: "About",     href: "#about" },
-        { label: "Programme", href: "#program" },
-        { label: "Venue",     href: "#venue" },
-        { label: "Partners",  href: "#partners" },
-      ],
-      programme: "Programme",
-      speakers: "Speakers",
-      exposant: "Exposant",
-      comingSoon: "Coming Soon",
+      about: "About",
+      program: "Program",
+      venue: "Venue",
+      register: "Register",
       registerNow: "Register Now",
     },
     hero: {
@@ -146,17 +139,10 @@ export const translations = {
 
   fr: {
     navbar: {
-      aPropos: "A Propos",
-      aProposItems: [
-        { label: "À propos",   href: "#about" },
-        { label: "Programme", href: "#program" },
-        { label: "Lieu",      href: "#venue" },
-        { label: "Partenaires", href: "#partners" },
-      ],
-      programme: "Programme",
-      speakers: "Speakers",
-      exposant: "Exposant",
-      comingSoon: "Bientôt",
+      about: "À propos",
+      program: "Programme",
+      venue: "Lieu",
+      register: "S'inscrire",
       registerNow: "S'inscrire",
     },
     hero: {
