@@ -1,28 +1,39 @@
-import { useState, useEffect, useRef } from "react";
+﻿import { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import logoWhite from "@/assets/logo-white.png";
 import { useLanguage, Lang } from "@/context/LanguageContext";
 import { translations } from "@/lib/translations";
 
+const ChevronIcon = ({ open }: { open: boolean }) => (
+  <svg
+    className={`w-3 h-3 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+    fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"
+  >
+    <path d="M19 9l-7 7-7-7" />
+  </svg>
+);
+
+const ComingSoonBadge = ({ label }: { label: string }) => (
+  <span className="ml-1.5 text-[9px] font-bold uppercase tracking-wider text-primary/80 bg-primary/10 px-1.5 py-0.5 rounded-full">
+    {label}
+  </span>
+);
+
 const Navbar = () => {
   const { lang, setLang } = useLanguage();
   const t = translations[lang].navbar;
 
-  const [scrolled, setScrolled] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const [langOpen, setLangOpen] = useState(false);
-  const langRef = useRef<HTMLDivElement>(null);
-  const navigate = useNavigate();
-  const location = useLocation();
+  const [scrolled, setScrolled]       = useState(false);
+  const [mobileOpen, setMobileOpen]   = useState(false);
+  const [aproposOpen, setAproposOpen] = useState(false);
+  const [mobileAproposOpen, setMobileAproposOpen] = useState(false);
+  const [langOpen, setLangOpen]       = useState(false);
 
-  const isHome = location.pathname === "/";
-
-  const navLinks = [
-    { label: t.about,    href: "#about" },
-    { label: t.program,  href: "#program" },
-    { label: t.venue,    href: "#venue" },
-    { label: t.register, href: "#register" },
-  ];
+  const aproposRef = useRef<HTMLDivElement>(null);
+  const langRef    = useRef<HTMLDivElement>(null);
+  const navigate   = useNavigate();
+  const location   = useLocation();
+  const isHome     = location.pathname === "/";
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 40);
@@ -31,26 +42,30 @@ const Navbar = () => {
   }, []);
 
   useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (langRef.current && !langRef.current.contains(e.target as Node)) {
-        setLangOpen(false);
-      }
+    const handler = (e: MouseEvent) => {
+      if (aproposRef.current && !aproposRef.current.contains(e.target as Node)) setAproposOpen(false);
+      if (langRef.current    && !langRef.current.contains(e.target as Node))    setLangOpen(false);
     };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
   }, []);
 
-  const handleNavClick = (href: string) => {
+  const scrollTo = (href: string) => {
     setMobileOpen(false);
+    setAproposOpen(false);
     if (href.startsWith("#")) {
       if (!isHome) navigate("/" + href);
+      else {
+        const el = document.querySelector(href);
+        el?.scrollIntoView({ behavior: "smooth" });
+      }
     }
   };
 
-  const switchLang = (l: Lang) => {
-    setLang(l);
-    setLangOpen(false);
-  };
+  const switchLang = (l: Lang) => { setLang(l); setLangOpen(false); };
+
+  const placeholderClass =
+    "flex items-center gap-1 text-sm font-medium text-white/35 cursor-default select-none";
 
   return (
     <nav
@@ -59,22 +74,65 @@ const Navbar = () => {
       }`}
     >
       <div className="container mx-auto flex items-center justify-between px-6 py-4">
-        <a href="/" className="flex items-center gap-3">
+
+        {/* Logo */}
+        <a href="/" className="flex items-center gap-3 shrink-0">
           <img src={logoWhite} alt="Maghreb Youth Summit" className="h-14" />
         </a>
 
-        {/* Desktop nav */}
-        <div className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) => (
-            <a
-              key={link.href}
-              href={isHome ? link.href : `/${link.href}`}
-              onClick={() => handleNavClick(link.href)}
-              className="text-sm font-medium text-white/70 hover:text-white transition-colors duration-300"
+        {/* â”€â”€ Desktop nav â”€â”€ */}
+        <div className="hidden md:flex items-center gap-7">
+
+          {/* A Propos dropdown */}
+          <div ref={aproposRef} className="relative">
+            <button
+              onMouseEnter={() => setAproposOpen(true)}
+              onClick={() => setAproposOpen((o) => !o)}
+              className="flex items-center gap-1.5 text-sm font-medium text-white/70 hover:text-white transition-colors duration-300"
             >
-              {link.label}
-            </a>
-          ))}
+              {t.aPropos}
+              <ChevronIcon open={aproposOpen} />
+            </button>
+
+            {aproposOpen && (
+              <div
+                onMouseLeave={() => setAproposOpen(false)}
+                className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-52 bg-black/90 backdrop-blur-2xl border border-white/10 rounded-xl shadow-2xl shadow-black/40 overflow-hidden"
+              >
+                <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
+                <div className="p-2 space-y-0.5">
+                  {t.aProposItems.map((item) => (
+                    <button
+                      key={item.href}
+                      onClick={() => scrollTo(item.href)}
+                      className="w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm text-white/70 hover:text-white hover:bg-white/10 transition-all duration-150 text-left"
+                    >
+                      <span className="w-1.5 h-1.5 rounded-full bg-primary/60 shrink-0" />
+                      {item.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Programme â€” placeholder */}
+          <span className={placeholderClass}>
+            {t.programme}
+            <ComingSoonBadge label={t.comingSoon} />
+          </span>
+
+          {/* Speakers â€” placeholder */}
+          <span className={placeholderClass}>
+            {t.speakers}
+            <ComingSoonBadge label={t.comingSoon} />
+          </span>
+
+          {/* Exposant â€” placeholder */}
+          <span className={placeholderClass}>
+            {t.exposant}
+            <ComingSoonBadge label={t.comingSoon} />
+          </span>
 
           {/* Language switcher */}
           <div ref={langRef} className="relative">
@@ -82,13 +140,8 @@ const Navbar = () => {
               onClick={() => setLangOpen((o) => !o)}
               className="flex items-center gap-1.5 text-sm font-bold text-white/70 hover:text-white bg-white/5 hover:bg-white/10 ring-1 ring-white/10 rounded-full px-3 py-1.5 transition-all duration-200"
             >
-              {lang === "en" ? "🇬🇧 EN" : "🇫🇷 FR"}
-              <svg
-                className={`w-3 h-3 transition-transform duration-200 ${langOpen ? "rotate-180" : ""}`}
-                fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"
-              >
-                <path d="M19 9l-7 7-7-7" />
-              </svg>
+              {lang === "en" ? "ðŸ‡¬ðŸ‡§ EN" : "ðŸ‡«ðŸ‡· FR"}
+              <ChevronIcon open={langOpen} />
             </button>
 
             {langOpen && (
@@ -105,7 +158,7 @@ const Navbar = () => {
                           : "text-white/70 hover:text-white hover:bg-white/10"
                       }`}
                     >
-                      {l === "en" ? "🇬🇧 English" : "🇫🇷 Français"}
+                      {l === "en" ? "ðŸ‡¬ðŸ‡§ English" : "ðŸ‡«ðŸ‡· FranÃ§ais"}
                     </button>
                   ))}
                 </div>
@@ -114,6 +167,7 @@ const Navbar = () => {
           </div>
         </div>
 
+        {/* Register Now */}
         <a
           href={isHome ? "#register" : "/#register"}
           className="hidden md:inline-flex bg-primary text-white font-bold px-6 py-2.5 rounded-full text-sm shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/30 hover:scale-105 transition-all duration-300 active:scale-95"
@@ -121,36 +175,58 @@ const Navbar = () => {
           {t.registerNow}
         </a>
 
+        {/* Hamburger */}
         <button
           className="md:hidden text-foreground"
           onClick={() => setMobileOpen(!mobileOpen)}
           aria-label="Toggle menu"
         >
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-            {mobileOpen ? (
-              <path d="M18 6L6 18M6 6l12 12" />
-            ) : (
-              <path d="M4 6h16M4 12h16M4 18h16" />
-            )}
+            {mobileOpen
+              ? <path d="M18 6L6 18M6 6l12 12" />
+              : <path d="M4 6h16M4 12h16M4 18h16" />
+            }
           </svg>
         </button>
       </div>
 
-      {/* Mobile menu */}
+      {/* â”€â”€ Mobile menu â”€â”€ */}
       {mobileOpen && (
         <div className="md:hidden bg-black/80 backdrop-blur-xl border-t border-white/10 px-6 py-4 space-y-3">
-          {navLinks.map((link) => (
-            <a
-              key={link.href}
-              href={isHome ? link.href : `/${link.href}`}
-              onClick={() => handleNavClick(link.href)}
-              className="block text-sm font-medium text-white/70 hover:text-white transition-colors duration-300"
+
+          {/* A Propos accordion */}
+          <div>
+            <button
+              onClick={() => setMobileAproposOpen((o) => !o)}
+              className="flex items-center justify-between w-full text-sm font-medium text-white/70 hover:text-white transition-colors duration-300"
             >
-              {link.label}
-            </a>
+              {t.aPropos}
+              <ChevronIcon open={mobileAproposOpen} />
+            </button>
+            {mobileAproposOpen && (
+              <div className="mt-2 ml-3 space-y-1 border-l border-white/10 pl-4">
+                {t.aProposItems.map((item) => (
+                  <button
+                    key={item.href}
+                    onClick={() => { setMobileAproposOpen(false); scrollTo(item.href); }}
+                    className="block w-full text-left text-sm text-white/60 hover:text-white transition-colors py-1"
+                  >
+                    {item.label}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Placeholders */}
+          {[t.programme, t.speakers, t.exposant].map((label) => (
+            <div key={label} className="flex items-center gap-2 text-sm text-white/30">
+              {label}
+              <ComingSoonBadge label={t.comingSoon} />
+            </div>
           ))}
 
-          {/* Mobile language switcher */}
+          {/* Language switcher */}
           <div className="flex items-center gap-2 pt-1">
             {(["en", "fr"] as Lang[]).map((l) => (
               <button
@@ -162,7 +238,7 @@ const Navbar = () => {
                     : "text-white/60 hover:text-white bg-white/5 ring-1 ring-white/10"
                 }`}
               >
-                {l === "en" ? "🇬🇧 EN" : "🇫🇷 FR"}
+                {l === "en" ? "ðŸ‡¬ðŸ‡§ EN" : "ðŸ‡«ðŸ‡· FR"}
               </button>
             ))}
           </div>
