@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+﻿import { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import logoWhite from "@/assets/logo-white.png";
 import { useLanguage, Lang } from "@/context/LanguageContext";
@@ -27,9 +27,12 @@ const Navbar = () => {
   const [mobileOpen, setMobileOpen]   = useState(false);
   const [aproposOpen, setAproposOpen] = useState(false);
   const [mobileAproposOpen, setMobileAproposOpen] = useState(false);
+  const [programOpen, setProgramOpen] = useState(false);
+  const [mobileProgramOpen, setMobileProgramOpen] = useState(false);
   const [langOpen, setLangOpen]       = useState(false);
 
   const aproposRef = useRef<HTMLDivElement>(null);
+  const programRef = useRef<HTMLDivElement>(null);
   const langRef    = useRef<HTMLDivElement>(null);
   const navigate   = useNavigate();
   const location   = useLocation();
@@ -44,6 +47,7 @@ const Navbar = () => {
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       if (aproposRef.current && !aproposRef.current.contains(e.target as Node)) setAproposOpen(false);
+      if (programRef.current && !programRef.current.contains(e.target as Node)) setProgramOpen(false);
       if (langRef.current    && !langRef.current.contains(e.target as Node))    setLangOpen(false);
     };
     document.addEventListener("mousedown", handler);
@@ -60,6 +64,13 @@ const Navbar = () => {
         el?.scrollIntoView({ behavior: "smooth" });
       }
     }
+  };
+
+  const goTo = (href: string) => {
+    setMobileOpen(false);
+    setProgramOpen(false);
+    setMobileProgramOpen(false);
+    navigate(href);
   };
 
   const switchLang = (l: Lang) => { setLang(l); setLangOpen(false); };
@@ -114,9 +125,58 @@ const Navbar = () => {
             )}
           </div>
 
-          <span className={placeholderClass}>
-            {t.programme}<ComingSoonBadge label={t.comingSoon} />
-          </span>
+          {/* Program dropdown */}
+          <div ref={programRef} className="relative">
+            <button
+              onMouseEnter={() => setProgramOpen(true)}
+              onClick={() => setProgramOpen((o) => !o)}
+              className="flex items-center gap-1.5 text-sm font-medium text-white/70 hover:text-white transition-colors duration-300"
+            >
+              {t.programme}
+              <ChevronIcon open={programOpen} />
+            </button>
+
+            {programOpen && (
+              <div
+                onMouseLeave={() => setProgramOpen(false)}
+                className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-64 bg-black/90 backdrop-blur-2xl border border-white/10 rounded-xl shadow-2xl shadow-black/40 overflow-hidden"
+              >
+                <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
+                <div className="p-2">
+                  {/* University */}
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-white/30 px-3 pt-2 pb-1">
+                    {t.programItems.universityLabel}
+                  </p>
+                  {t.programItems.university.map((item) => (
+                    <button
+                      key={item.href}
+                      onClick={() => goTo(item.href)}
+                      className="w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm text-white/70 hover:text-white hover:bg-white/10 transition-all duration-150 text-left"
+                    >
+                      <span className="w-1.5 h-1.5 rounded-full bg-primary/60 shrink-0" />
+                      {item.label}
+                    </button>
+                  ))}
+                  {/* High School */}
+                  <div className="my-1 border-t border-white/10" />
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-white/30 px-3 pt-1 pb-1">
+                    {t.programItems.highschoolLabel}
+                  </p>
+                  {t.programItems.highschool.map((item) => (
+                    <button
+                      key={item.href}
+                      onClick={() => goTo(item.href)}
+                      className="w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm text-white/70 hover:text-white hover:bg-white/10 transition-all duration-150 text-left"
+                    >
+                      <span className="w-1.5 h-1.5 rounded-full bg-violet-400/60 shrink-0" />
+                      {item.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
           <span className={placeholderClass}>
             {t.speakers}<ComingSoonBadge label={t.comingSoon} />
           </span>
@@ -158,7 +218,7 @@ const Navbar = () => {
         </div>
 
         <a
-          href={isHome ? "#register" : "/#register"}
+          href="/register"
           className="hidden md:inline-flex bg-primary text-white font-bold px-6 py-2.5 rounded-full text-sm shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/30 hover:scale-105 transition-all duration-300 active:scale-95"
         >
           {t.registerNow}
@@ -207,7 +267,37 @@ const Navbar = () => {
             )}
           </div>
 
-          {[t.programme, t.speakers, t.exposant].map((label) => (
+          {/* Program accordion (mobile) */}
+          <div>
+            <button
+              onClick={() => setMobileProgramOpen((o) => !o)}
+              className="flex items-center justify-between w-full text-sm font-medium text-white/70 hover:text-white transition-colors duration-300"
+            >
+              {t.programme}
+              <ChevronIcon open={mobileProgramOpen} />
+            </button>
+            {mobileProgramOpen && (
+              <div className="mt-2 ml-3 space-y-1 border-l border-white/10 pl-4">
+                <p className="text-[10px] font-bold uppercase tracking-widest text-white/30 pt-1 pb-0.5">{t.programItems.universityLabel}</p>
+                {t.programItems.university.map((item) => (
+                  <button key={item.href} onClick={() => goTo(item.href)}
+                    className="block w-full text-left text-sm text-white/60 hover:text-white transition-colors py-1">
+                    {item.label}
+                  </button>
+                ))}
+                <div className="border-t border-white/10 my-1" />
+                <p className="text-[10px] font-bold uppercase tracking-widest text-white/30 pb-0.5">{t.programItems.highschoolLabel}</p>
+                {t.programItems.highschool.map((item) => (
+                  <button key={item.href} onClick={() => goTo(item.href)}
+                    className="block w-full text-left text-sm text-white/60 hover:text-white transition-colors py-1">
+                    {item.label}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {[t.speakers, t.exposant].map((label) => (
             <div key={label} className="flex items-center gap-2 text-sm text-white/30">
               {label}<ComingSoonBadge label={t.comingSoon} />
             </div>
@@ -231,7 +321,7 @@ const Navbar = () => {
           </div>
 
           <a
-            href={isHome ? "#register" : "/#register"}
+            href="/register"
             onClick={() => setMobileOpen(false)}
             className="block bg-primary text-white font-bold px-6 py-2.5 rounded-full text-sm text-center"
           >

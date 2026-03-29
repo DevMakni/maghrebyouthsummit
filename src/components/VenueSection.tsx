@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+﻿import { motion } from "framer-motion";
 import { MapPin } from "lucide-react";
 import amirPalaceImg from "@/assets/Amirpalace.jpg";
 import shemsHolidayImg from "@/assets/shemsholiday.jpg";

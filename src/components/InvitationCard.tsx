@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+﻿import React, { useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import html2canvas from "html2canvas";
 import logoWhite from "@/assets/logo-white.png";
@@ -15,14 +15,14 @@ const InvitationCard = ({ name, track = "Young Leader", onClose }: InvitationCar
   const [isSharing, setIsSharing] = React.useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
 
-  /* ── Escape key ── */
+  /* â”€â”€ Escape key â”€â”€ */
   useEffect(() => {
     const handler = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
     document.addEventListener("keydown", handler);
     return () => document.removeEventListener("keydown", handler);
   }, [onClose]);
 
-  /* ── Generate canvas blob ── */
+  /* â”€â”€ Generate canvas blob â”€â”€ */
   const generateBlob = async (format: "post" | "story"): Promise<{ blob: Blob; dataUrl: string }> => {
     const card = document.getElementById("invitation-card");
     if (!card) throw new Error("Card not found");
@@ -64,7 +64,7 @@ const InvitationCard = ({ name, track = "Young Leader", onClose }: InvitationCar
     return { blob, dataUrl };
   };
 
-  /* ── Download ── */
+  /* â”€â”€ Download â”€â”€ */
   const downloadCard = async (format: "post" | "story") => {
     setIsDownloading(true);
     try {
@@ -78,7 +78,7 @@ const InvitationCard = ({ name, track = "Young Leader", onClose }: InvitationCar
     }
   };
 
-  /* ── Share to feed / story ── */
+  /* â”€â”€ Share to feed / story â”€â”€ */
   const shareCard = async (format: "post" | "story") => {
     setIsSharing(true);
     try {
@@ -88,7 +88,7 @@ const InvitationCard = ({ name, track = "Young Leader", onClose }: InvitationCar
         await navigator.share({
           files: [file],
           title: "Maghreb Youth Summit 2026",
-          text: "I'm officially invited to the Maghreb Youth Summit 2026 🎉",
+          text: "I'm officially invited to the Maghreb Youth Summit 2026 ðŸŽ‰",
         });
       } else {
         /* fallback: download if share API not available */
@@ -109,7 +109,7 @@ const InvitationCard = ({ name, track = "Young Leader", onClose }: InvitationCar
 
   return (
     <AnimatePresence>
-      {/* ── Backdrop ── */}
+      {/* â”€â”€ Backdrop â”€â”€ */}
       <motion.div
         key="invitation-backdrop"
         initial={{ opacity: 0 }}
@@ -119,7 +119,7 @@ const InvitationCard = ({ name, track = "Young Leader", onClose }: InvitationCar
         onClick={onClose}
         className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto"
       >
-        {/* ── Inner container (stops propagation so clicking card doesn't close) ── */}
+        {/* â”€â”€ Inner container (stops propagation so clicking card doesn't close) â”€â”€ */}
         <motion.div
           key="invitation-container"
           initial={{ opacity: 0, scale: 0.85, y: 40 }}
@@ -129,9 +129,9 @@ const InvitationCard = ({ name, track = "Young Leader", onClose }: InvitationCar
           onClick={(e) => e.stopPropagation()}
           className="flex flex-col items-center gap-8 w-full max-w-md py-8"
         >
-          {/* ════════════════════════════════════════
+          {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
               THE ACTUAL CARD (captured by html2canvas)
-              ════════════════════════════════════════ */}
+              â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
           <div
             id="invitation-card"
             ref={cardRef}
@@ -160,7 +160,7 @@ const InvitationCard = ({ name, track = "Young Leader", onClose }: InvitationCar
               }}
             />
 
-            {/* Dark overlay — top fade for logo readability */}
+            {/* Dark overlay â€” top fade for logo readability */}
             <div style={{
               position: "absolute",
               inset: 0,
@@ -174,16 +174,16 @@ const InvitationCard = ({ name, track = "Young Leader", onClose }: InvitationCar
               background: "radial-gradient(ellipse at 50% 110%, rgba(223,32,48,0.18) 0%, transparent 65%)",
             }} />
 
-            {/* Corner bracket — top-left */}
+            {/* Corner bracket â€” top-left */}
             <div style={{ position: "absolute", top: 18, left: 18, width: 20, height: 20, borderTop: "1.5px solid rgba(223,32,48,0.6)", borderLeft: "1.5px solid rgba(223,32,48,0.6)" }} />
-            {/* Corner bracket — top-right */}
+            {/* Corner bracket â€” top-right */}
             <div style={{ position: "absolute", top: 18, right: 18, width: 20, height: 20, borderTop: "1.5px solid rgba(223,32,48,0.6)", borderRight: "1.5px solid rgba(223,32,48,0.6)" }} />
-            {/* Corner bracket — bottom-left */}
+            {/* Corner bracket â€” bottom-left */}
             <div style={{ position: "absolute", bottom: 18, left: 18, width: 20, height: 20, borderBottom: "1.5px solid rgba(223,32,48,0.6)", borderLeft: "1.5px solid rgba(223,32,48,0.6)" }} />
-            {/* Corner bracket — bottom-right */}
+            {/* Corner bracket â€” bottom-right */}
             <div style={{ position: "absolute", bottom: 18, right: 18, width: 20, height: 20, borderBottom: "1.5px solid rgba(223,32,48,0.6)", borderRight: "1.5px solid rgba(223,32,48,0.6)" }} />
 
-            {/* ── LOGO top ── */}
+            {/* â”€â”€ LOGO top â”€â”€ */}
             <div style={{ position: "absolute", top: 30, left: 0, right: 0, display: "flex", justifyContent: "center" }}>
               <img
                 src={logoWhite}
@@ -193,7 +193,7 @@ const InvitationCard = ({ name, track = "Young Leader", onClose }: InvitationCar
               />
             </div>
 
-            {/* ── CENTER CONTENT ── */}
+            {/* â”€â”€ CENTER CONTENT â”€â”€ */}
             <div style={{
               position: "absolute",
               inset: 0,
@@ -287,7 +287,7 @@ const InvitationCard = ({ name, track = "Young Leader", onClose }: InvitationCar
               </div>
             </div>
 
-            {/* ── BOTTOM ROW ── */}
+            {/* â”€â”€ BOTTOM ROW â”€â”€ */}
             <div style={{
               position: "absolute",
               bottom: 28,
@@ -298,7 +298,7 @@ const InvitationCard = ({ name, track = "Young Leader", onClose }: InvitationCar
               alignItems: "center",
               gap: "8px",
             }}>
-              {["2026", "·", "MONASTIR", "·", "TUNISIA"].map((item, i) => (
+              {["2026", "Â·", "MONASTIR", "Â·", "TUNISIA"].map((item, i) => (
                 <span key={i} style={{ fontSize: "7.5px", letterSpacing: "0.18em", color: "rgba(255,255,255,0.38)", fontWeight: 500 }}>
                   {item}
                 </span>
@@ -309,9 +309,9 @@ const InvitationCard = ({ name, track = "Young Leader", onClose }: InvitationCar
             <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "2px", background: "linear-gradient(90deg, transparent, #DF2030 25%, #DF2030 75%, transparent)" }} />
           </div>
 
-          {/* ════════════════════════════════════════
+          {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
               CONTROLS (not captured by html2canvas)
-              ════════════════════════════════════════ */}
+              â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
           <motion.div
             key="invitation-controls"
             initial={{ opacity: 0, y: 20 }}
@@ -387,7 +387,7 @@ const InvitationCard = ({ name, track = "Young Leader", onClose }: InvitationCar
               onClick={onClose}
               className="text-white/35 hover:text-white text-sm transition-colors cursor-pointer mt-1"
             >
-              Close and continue →
+              Close and continue â†’
             </button>
           </motion.div>
         </motion.div>

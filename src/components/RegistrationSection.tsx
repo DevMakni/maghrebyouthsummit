@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, FormEvent } from "react";
+﻿import { useState, useRef, useEffect, FormEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import InvitationCard from "@/components/InvitationCard";
@@ -8,7 +8,7 @@ import { translations } from "@/lib/translations";
 const inputClass =
   "w-full bg-white/5 border-none ring-1 ring-white/10 rounded-lg px-4 py-3 text-white placeholder:text-white/40 focus:ring-2 focus:ring-primary outline-none transition-all text-sm";
 
-/* ── Custom Select ── */
+/* â”€â”€ Custom Select â”€â”€ */
 interface CustomSelectProps {
   name: string;
   placeholder: string;

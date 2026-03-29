@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+﻿import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { Zap, Users, Clock, Trophy, Target, ArrowRight, Rocket } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
@@ -134,7 +134,7 @@ const HackathonOverview = () => {
           className="flex flex-col sm:flex-row gap-4 justify-center items-center"
         >
           <a
-            href="#register"
+            href="/register"
             className="inline-flex items-center justify-center gap-2 bg-primary text-white font-bold px-8 py-4 rounded-full shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/35 hover:scale-105 transition-all duration-300 active:scale-95"
           >
             <Rocket className="w-5 h-5" />

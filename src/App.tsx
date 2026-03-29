@@ -1,4 +1,4 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+﻿import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -9,6 +9,8 @@ import Partnership from "./pages/Partnership.tsx";
 import Hackathon from "./pages/Hackathon.tsx";
 import ProgrammeEntrepreneuriat from "./pages/ProgrammeEntrepreneuriat.tsx";
 import DigitalIA from "./pages/DigitalIA.tsx";
+import TheArtOfBecoming from "./pages/TheArtOfBecoming.tsx";
+import Register from "./pages/Register.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -26,6 +28,8 @@ const App = () => (
           <Route path="/paths/entrepreneuriat" element={<ProgrammeEntrepreneuriat />} />
           <Route path="/paths/hackathon" element={<Hackathon />} />
           <Route path="/paths/digital-ia" element={<DigitalIA />} />
+          <Route path="/paths/art-of-becoming" element={<TheArtOfBecoming />} />
+          <Route path="/register" element={<Register />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

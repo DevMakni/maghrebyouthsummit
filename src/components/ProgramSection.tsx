@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+﻿import { motion } from "framer-motion";
 import entrepreneurshipImg from "@/assets/entrepreuneurship.jpg";
 import hackathonImg from "@/assets/hackton.jpg";
 import aiImg from "@/assets/ai.jpg";

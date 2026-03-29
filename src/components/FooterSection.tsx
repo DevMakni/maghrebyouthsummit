@@ -1,4 +1,4 @@
-import logoWhite from "@/assets/logo-white.png";
+﻿import logoWhite from "@/assets/logo-white.png";
 import { Mail, Phone, MapPin } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 import { translations } from "@/lib/translations";

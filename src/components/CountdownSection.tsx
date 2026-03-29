@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useLanguage } from "@/context/LanguageContext";
 import { translations } from "@/lib/translations";
@@ -105,7 +105,7 @@ const CountdownSection = () => {
           {t.dontMissOut}
         </h2>
 
-        {/* Payment deadline — accent style */}
+        {/* Payment deadline â€” accent style */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}

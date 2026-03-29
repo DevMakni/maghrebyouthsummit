@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+﻿import { motion } from "framer-motion";
 import logoWhite from "@/assets/logo-white.png";
 import { useLanguage } from "@/context/LanguageContext";
 import { translations } from "@/lib/translations";
@@ -57,7 +57,7 @@ const HeroSection = () => {
         
             className="text-lg md:text-xl text-white/70 font-medium tracking-wide"
           >
-            2026 — Monastir, Tunisia
+            2026 - Monastir, Tunisia
           </motion.p> 
 
           <motion.div
@@ -66,7 +66,7 @@ const HeroSection = () => {
             className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-6"
           >
             <motion.a
-              href="#register"
+              href="/register"
               className="bg-primary text-white font-bold px-8 py-4 rounded-full text-base shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 transition-all"
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.97 }}

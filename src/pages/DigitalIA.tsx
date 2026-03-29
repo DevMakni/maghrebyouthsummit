@@ -1,170 +1,287 @@
 import { motion } from "framer-motion";
-import { Cpu, Globe, BrainCircuit, Blocks, Sparkles, BarChart3, BookOpen, CalendarDays, MapPin, Rocket } from "lucide-react";
+import { Cpu, CalendarDays, MapPin } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import logoWhite from "@/assets/logo-white.png";
+import heroBg from "@/assets/ai.jpg";
+import { useLanguage } from "@/context/LanguageContext";
+import { translations } from "@/lib/translations";
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 30 },
-  show: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.55, delay: i * 0.1, ease: [0.2, 0, 0, 1] as [number, number, number, number] },
-  }),
+const TYPE_STYLE: Record<string, { dot: string; badge: string; label: string }> = {
+  logistics:        { dot: "bg-slate-400",   badge: "bg-slate-500/15 text-slate-300",     label: "Logistics" },
+  meeting:          { dot: "bg-blue-400",    badge: "bg-blue-500/15 text-blue-300",       label: "Meeting" },
+  ceremony:         { dot: "bg-amber-400",   badge: "bg-amber-500/15 text-amber-300",     label: "Ceremony" },
+  meal:             { dot: "bg-emerald-400", badge: "bg-emerald-500/15 text-emerald-300", label: "Meal" },
+  entertainment:    { dot: "bg-purple-400",  badge: "bg-purple-500/15 text-purple-300",   label: "Show" },
+  social:           { dot: "bg-pink-400",    badge: "bg-pink-500/15 text-pink-300",       label: "Social" },
+  activity:         { dot: "bg-orange-400",  badge: "bg-orange-500/15 text-orange-300",   label: "Activity" },
+  workshop:         { dot: "bg-sky-400",     badge: "bg-sky-500/15 text-sky-300",         label: "Workshop" },
+  panel:            { dot: "bg-indigo-400",  badge: "bg-indigo-500/15 text-indigo-300",   label: "Panel" },
+  talk:             { dot: "bg-cyan-400",    badge: "bg-cyan-500/15 text-cyan-300",       label: "Session" },
+  break:            { dot: "bg-slate-600",   badge: "bg-slate-500/10 text-slate-500",     label: "Break" },
+  parallel_session: { dot: "bg-sky-400",     badge: "bg-sky-500/15 text-sky-300",         label: "Parallel Tracks" },
 };
 
-const topics = [
-  { icon: BrainCircuit, title: "Intelligence Artificielle", desc: "Explorez le Deep Learning, le NLP et la Computer Vision appliques aux defis du Maghreb." },
-  { icon: Cpu, title: "Cloud & Infrastructure", desc: "Comprenez les architectures cloud, les microservices et l'edge computing." },
-  { icon: Blocks, title: "Blockchain & Web3", desc: "Decouvrez les smart contracts, la DeFi et les nouveaux modeles de confiance numerique." },
-  { icon: Globe, title: "Cybersecurite", desc: "Maitrisez les fondamentaux de la securite numerique et de la protection des donnees." },
-  { icon: Sparkles, title: "IA Generative", desc: "Apprenez a utiliser et creer avec les LLMs, la generation d'images et au-dela." },
-  { icon: BarChart3, title: "Data & Analytics", desc: "De la collecte a la visualisation, devenez data-driven pour 2030." },
+interface Track { track_id: string; track_title: string; }
+interface Program {
+  id: string; start: string; end: string;
+  title: string; subtitle?: string; type: string;
+  parallel_tracks?: Track[];
+}
+interface Section { id: string; title: string; programs: Program[]; }
+interface DayData { day: number; day_title?: string; sections: Section[]; }
+
+const days: DayData[] = [
+  {
+    day: 1,
+    sections: [
+      {
+        id: "d1-s1",
+        title: "The Threshold: Peak Entrance",
+        programs: [
+          { id: "d1-1", start: "14:00", end: "16:00", title: "The Gateway", subtitle: "Check In", type: "logistics" },
+          { id: "d1-2", start: "16:00", end: "16:45", title: "The Presidential Summit", type: "meeting" },
+          { id: "d1-3", start: "17:00", end: "19:00", title: "The Opening Ceremony", type: "ceremony" },
+        ],
+      },
+      {
+        id: "d1-s2",
+        title: "The Collective: Power in Unity",
+        programs: [
+          { id: "d1-4", start: "19:00", end: "21:00", title: "The Elite Dining", type: "meal" },
+          { id: "d1-5", start: "21:00", end: "21:30", title: "The Spotlight Show", type: "entertainment" },
+          { id: "d1-6", start: "22:00", end: "23:30", title: "Stand-up", type: "entertainment" },
+        ],
+      },
+      {
+        id: "d1-s3",
+        title: "The Infinite: Beyond the Horizon",
+        programs: [
+          { id: "d1-7", start: "00:00", end: "late", title: "The Midnight Pulse", type: "social" },
+        ],
+      },
+    ],
+  },
+  {
+    day: 2,
+    day_title: "Digital Excellence Program",
+    sections: [
+      {
+        id: "d2-s1",
+        title: "Kickoff: The Morning",
+        programs: [
+          { id: "d2-1", start: "07:00", end: "08:00", title: "Power Start", subtitle: "Breakfast", type: "meal" },
+          { id: "d2-2", start: "08:00", end: "09:30", title: "Team Pulse", type: "activity" },
+          { id: "d2-3", start: "09:30", end: "10:45", title: "The Digital Horizon", type: "talk" },
+          { id: "d2-4", start: "10:45", end: "11:00", title: "Break", type: "break" },
+          {
+            id: "d2-5", start: "11:00", end: "13:00", title: "Expert Tracks Program", type: "parallel_session",
+            parallel_tracks: [
+              { track_id: "t1", track_title: "Artificial Intelligence & Intelligent Systems" },
+              { track_id: "t2", track_title: "Digital Marketing Mastery" },
+              { track_id: "t3", track_title: "Robotics & Innovation Engineering" },
+            ],
+          },
+          { id: "d2-6", start: "13:00", end: "14:00", title: "Lunch", type: "meal" },
+        ],
+      },
+      {
+        id: "d2-s2",
+        title: "Deep Dive: The Core",
+        programs: [
+          { id: "d2-7", start: "14:00", end: "16:00", title: "Tech Arena & Labs", type: "workshop" },
+          { id: "d2-8", start: "16:00", end: "18:00", title: "Future Voices", type: "panel" },
+          { id: "d2-9", start: "18:00", end: "19:00", title: "Break", type: "break" },
+        ],
+      },
+      {
+        id: "d2-s3",
+        title: "After Dark: The Vibe",
+        programs: [
+          { id: "d2-10", start: "19:00", end: "21:00", title: "Unity Table", subtitle: "Dinner", type: "meal" },
+          { id: "d2-11", start: "21:00", end: "23:00", title: "Movie & Chill", type: "entertainment" },
+          { id: "d2-12", start: "00:00", end: "late", title: "The Midnight Wave", type: "social" },
+        ],
+      },
+    ],
+  },
+  {
+    day: 3,
+    sections: [
+      {
+        id: "d3-s1",
+        title: "The Finale: Rise & Shine",
+        programs: [
+          { id: "d3-1", start: "07:00", end: "08:30", title: "Fresh Start", subtitle: "Breakfast", type: "meal" },
+          { id: "d3-2", start: "08:30", end: "11:00", title: "Panel CIFE", type: "panel" },
+          { id: "d3-3", start: "11:00", end: "12:00", title: "The Final Chapter", subtitle: "Closing Ceremony", type: "ceremony" },
+          { id: "d3-4", start: "12:00", end: "12:30", title: "The Final Gate", subtitle: "Check-out", type: "logistics" },
+        ],
+      },
+    ],
+  },
 ];
 
-const DigitalIA = () => (
-  <div className="min-h-screen text-white">
-    <Navbar />
+const DAY_DATES = ["April 10", "April 11", "April 12"];
 
-    {/* ── HERO ── */}
-    <section className="relative min-h-[75vh] flex items-center justify-center text-center pt-28 pb-20">
-      <div className="absolute inset-0 section-overlay-strong" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,hsl(210_80%_50%/0.12)_0%,transparent_65%)]" />
-      <div className="relative z-10 container mx-auto px-6 max-w-4xl">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5 }}
-          className="inline-flex items-center gap-2 bg-sky-500/10 ring-1 ring-sky-500/25 rounded-full px-5 py-2 text-xs font-bold tracking-widest uppercase text-sky-400 mb-8"
-        >
-          <Cpu className="w-3.5 h-3.5" />
-          Parcours 3
-        </motion.div>
-
-        <motion.h1
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.1 }}
-          className="font-display font-black text-5xl md:text-7xl tracking-tighter mb-6"
-        >
-          <span className="text-white text-glow-white">Programme </span>
-          <span className="text-sky-400">Digital & IA</span>
-          <span className="block text-amber-400 text-3xl md:text-5xl mt-2">en 2030</span>
-        </motion.h1>
-
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-lg md:text-xl text-white/65 leading-relaxed mb-12 max-w-3xl mx-auto"
-        >
-          Plongez dans les technologies qui definiront demain — Intelligence Artificielle, Cloud, Cybersecurite, Web3 — et preparez-vous a batir l'avenir numerique du Maghreb.
-        </motion.p>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.35 }}
-          className="flex flex-col sm:flex-row gap-4 justify-center items-center"
-        >
-          <a
-            href="/#register"
-            className="inline-flex items-center justify-center gap-2 bg-sky-500 text-white font-bold px-8 py-4 rounded-full shadow-lg shadow-sky-500/25 hover:shadow-xl hover:shadow-sky-500/35 hover:scale-105 transition-all duration-300 active:scale-95"
-          >
-            <Rocket className="w-5 h-5" />
-            Register Now
-          </a>
-          <div className="flex items-center gap-2 text-sm text-white/50">
-            <CalendarDays className="w-4 h-4 text-sky-400" />
-            10-12 Avril 2026
-            <span className="mx-2 text-white/20">|</span>
-            <MapPin className="w-4 h-4 text-sky-400" />
-            Monastir, Tunisia
-          </div>
-        </motion.div>
+function ProgramRow({ prog }: { prog: Program }) {
+  const s = TYPE_STYLE[prog.type] || TYPE_STYLE.activity;
+  const isBreak = prog.type === "break";
+  return (
+    <div className={`flex items-start gap-3 px-4 py-3 rounded-xl border transition-all ${isBreak ? "border-white/5 opacity-50" : "border-white/10 bg-white/[0.03] hover:bg-white/[0.06]"}`}>
+      <div className="min-w-[72px] text-right shrink-0 pt-0.5">
+        <span className="text-xs font-mono font-bold text-white/80 block">{prog.start}</span>
+        <span className="text-[10px] font-mono text-white/30 block">- {prog.end === "late" ? "Late" : prog.end}</span>
       </div>
-    </section>
-
-    {/* ── TOPICS ── */}
-    <section className="relative py-24 md:py-32">
-      <div className="absolute inset-0 section-overlay" />
-      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-      <div className="container mx-auto px-6 relative z-10">
-        <motion.h2
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="font-display font-black text-4xl md:text-5xl tracking-tighter text-white text-center mb-4"
-        >
-          Topics & Technologies
-        </motion.h2>
-        <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="text-white/60 text-center max-w-xl mx-auto mb-14"
-        >
-          Un panorama complet des technologies cles pour la prochaine decennie.
-        </motion.p>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-          {topics.map((t, i) => (
-            <motion.div
-              key={i}
-              custom={i}
-              variants={fadeUp}
-              initial="hidden"
-              whileInView="show"
-              viewport={{ once: true }}
-              whileHover={{ y: -6, transition: { duration: 0.3 } }}
-              className="card-glass rounded-2xl p-8 text-center group ring-1 ring-white/10"
-            >
-              <div className="w-14 h-14 rounded-xl bg-sky-500/15 flex items-center justify-center mx-auto mb-4 group-hover:bg-sky-500/25 group-hover:scale-110 transition-all duration-300">
-                <t.icon className="w-7 h-7 text-sky-400" strokeWidth={1.5} />
-              </div>
-              <h3 className="font-display font-bold text-lg text-white mb-2">{t.title}</h3>
-              <p className="text-sm text-white/60 leading-relaxed">{t.desc}</p>
-            </motion.div>
-          ))}
+      <div className={`w-2 h-2 rounded-full mt-2 shrink-0 ${s.dot}`} />
+      <div className="flex-1 min-w-0">
+        <div className="flex flex-wrap items-center gap-2 mb-0.5">
+          <span className={`text-[10px] font-bold tracking-wider uppercase px-2 py-0.5 rounded-full ${s.badge}`}>{s.label}</span>
+          {prog.subtitle && <span className="text-xs text-white/40 italic">{prog.subtitle}</span>}
         </div>
+        <p className={`font-semibold text-sm leading-snug ${isBreak ? "text-white/40" : "text-white"}`}>{prog.title}</p>
+        {prog.parallel_tracks && (
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 mt-3">
+            {prog.parallel_tracks.map(t => (
+              <div key={t.track_id} className="text-xs px-3 py-2 rounded-lg bg-sky-500/10 text-sky-300 border border-sky-500/20 font-medium leading-snug">
+                {t.track_title}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
-    </section>
+    </div>
+  );
+}
 
-    {/* ── COMING SOON ── */}
-    <section className="relative py-24 md:py-32">
-      <div className="absolute inset-0 section-overlay-strong" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,hsl(210_80%_50%/0.08)_0%,transparent_70%)]" />
-      <div className="container mx-auto px-6 relative z-10 max-w-3xl text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="card-glass rounded-2xl p-10 ring-1 ring-sky-500/20"
-        >
-          <BookOpen className="w-12 h-12 text-sky-400 mx-auto mb-4" strokeWidth={1.5} />
-          <h3 className="font-display font-bold text-2xl text-white mb-3">Programme Detaille — Bientot Disponible</h3>
-          <p className="text-white/55 mb-6">
-            Les workshops, keynotes et masterclasses seront annonces tres prochainement. Inscrivez-vous des maintenant pour recevoir le programme complet.
-          </p>
-          <a
-            href="/#register"
-            className="inline-flex items-center justify-center gap-2 bg-sky-500 text-white font-bold px-8 py-4 rounded-full shadow-lg shadow-sky-500/25 hover:shadow-xl hover:shadow-sky-500/35 hover:scale-105 transition-all duration-300 active:scale-95"
-          >
-            Get Notified
-          </a>
-        </motion.div>
-      </div>
-    </section>
+const DigitalIA = () => {
+  const { lang } = useLanguage();
+  const tp = translations[lang].programPages;
+  const t = tp.digital;
 
-    {/* ── FOOTER ── */}
-    <footer className="relative py-8 border-t border-white/10">
-      <div className="absolute inset-0 section-overlay-strong" />
-      <div className="container mx-auto px-6 relative z-10 flex flex-col md:flex-row items-center justify-between gap-4">
-        <img src={logoWhite} alt="Maghreb Youth Summit" className="h-8 opacity-70" />
-        <p className="text-xs text-white/40">© 2026 Maghreb Youth Summit. All rights reserved.</p>
-        <a href="/" className="text-xs text-white/50 hover:text-white transition-colors">← Back to Home</a>
+  return (
+    <div className="min-h-screen text-white relative">
+      <div
+        className="fixed inset-0 -z-10"
+        style={{ backgroundImage: `url(${heroBg})`, backgroundSize: "cover", backgroundPosition: "center", filter: "blur(8px)", transform: "scale(1.1)" }}
+      />
+      <div className="fixed inset-0 -z-10 bg-black/70" />
+      <div className="relative min-h-screen">
+        <Navbar />
+
+        {/* HERO */}
+        <section className="relative min-h-[70vh] flex items-center justify-center text-center pt-28 pb-20">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,hsl(210_80%_50%/0.18)_0%,transparent_70%)]" />
+          <div className="relative z-10 container mx-auto px-6 max-w-4xl">
+            <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.1 }}
+              className="font-display font-black text-5xl md:text-7xl tracking-tighter mb-6"
+            >
+              <span className="text-white">{t.heading1} </span>
+              <span className="text-sky-400">{t.heading2}</span>
+            </motion.h1>
+            <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }}
+              className="text-lg md:text-xl text-white/70 leading-relaxed mb-12 max-w-3xl mx-auto"
+            >
+              {t.desc}
+            </motion.p>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.35 }}
+              className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+            >
+              <a href="/register" className="inline-flex items-center justify-center gap-2 bg-sky-500 text-white font-bold px-8 py-4 rounded-full shadow-lg shadow-sky-500/30 hover:scale-105 transition-all duration-300">
+
+                {tp.registerNow}
+              </a>
+              <div className="flex items-center gap-2 text-sm text-white/50">
+                <CalendarDays className="w-4 h-4 text-sky-400" />
+                {tp.date}
+                <span className="mx-2 text-white/20">|</span>
+                <MapPin className="w-4 h-4 text-sky-400" />
+                {tp.location}
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* FULL PROGRAM */}
+        <section className="py-20">
+          <div className="container mx-auto px-6 max-w-4xl">
+            <div className="text-center mb-16">
+              <div className="inline-flex items-center gap-2 bg-sky-500/10 ring-1 ring-sky-500/25 rounded-full px-5 py-2 text-xs font-bold tracking-widest uppercase text-sky-400 mb-5">
+                <CalendarDays className="w-3.5 h-3.5" />
+                {tp.fullProgram}
+              </div>
+              <h2 className="font-display font-black text-4xl md:text-5xl tracking-tighter text-white mt-3">
+                {t.programHeading}
+              </h2>
+            </div>
+
+            <div className="space-y-24">
+              {days.map((dayData, di) => (
+                <motion.div
+                  key={dayData.day}
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-80px" }}
+                  transition={{ duration: 0.5, delay: di * 0.05 }}
+                >
+                  <div className="flex items-center gap-5 mb-10">
+                    <div className="w-16 h-16 rounded-2xl bg-sky-500 flex flex-col items-center justify-center shadow-lg shadow-sky-500/30 shrink-0">
+                      <span className="text-white/60 text-[9px] font-bold uppercase tracking-widest">Day</span>
+                      <span className="text-white font-black text-2xl leading-none">{dayData.day}</span>
+                    </div>
+                    <div>
+                      <p className="text-sky-400 text-xs font-bold tracking-widest uppercase">{DAY_DATES[di]}, 2026</p>
+                      <p className="text-white font-black text-xl mt-0.5">
+                        {dayData.day_title || t.dayTitles[dayData.day === 1 ? 0 : 2]}
+                      </p>
+                    </div>
+                    <div className="flex-1 h-px bg-gradient-to-r from-sky-500/40 to-transparent hidden sm:block" />
+                  </div>
+
+                  <div className="space-y-8 relative pl-5 md:pl-8 border-l-2 border-sky-500/20 ml-3">
+                    {dayData.sections.map((section, si) => (
+                      <motion.div
+                        key={section.id}
+                        initial={{ opacity: 0, x: -10 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: si * 0.07 }}
+                      >
+                        <div className="flex items-center gap-3 mb-3">
+                          <div className="w-2 h-2 rounded-full bg-sky-500/50 -ml-[25px] md:-ml-[37px] shrink-0" />
+                          <p className="text-[10px] font-bold tracking-widest uppercase text-sky-400/70">{section.title}</p>
+                        </div>
+                        <div className="space-y-2">
+                          {section.programs.map(prog => (
+                            <ProgramRow key={prog.id} prog={prog} />
+                          ))}
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+
+            <div className="mt-20 text-center">
+              <a href="/register" className="inline-flex items-center justify-center gap-2 bg-sky-500 text-white font-bold px-10 py-4 rounded-full shadow-lg shadow-sky-500/25 hover:scale-105 transition-all duration-300">
+
+                {tp.registerNow}
+              </a>
+            </div>
+          </div>
+        </section>
+
+        {/* FOOTER */}
+        <footer className="py-8 border-t border-white/10">
+          <div className="container mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
+            <img src={logoWhite} alt="Maghreb Youth Summit" className="h-8 opacity-70" />
+            <p className="text-xs text-white/40">{tp.copyright}</p>
+            <a href="/" className="text-xs text-white/50 hover:text-white transition-colors">{tp.backHome}</a>
+          </div>
+        </footer>
       </div>
-    </footer>
-  </div>
-);
+    </div>
+  );
+};
 
 export default DigitalIA;
