@@ -11,6 +11,7 @@ import ProgrammeEntrepreneuriat from "./pages/ProgrammeEntrepreneuriat.tsx";
 import DigitalIA from "./pages/DigitalIA.tsx";
 import TheArtOfBecoming from "./pages/TheArtOfBecoming.tsx";
 import Register from "./pages/Register.tsx";
+import Speakers from "./pages/Speakers.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -29,6 +30,7 @@ const App = () => (
           <Route path="/paths/hackathon" element={<Hackathon />} />
           <Route path="/paths/digital-ia" element={<DigitalIA />} />
           <Route path="/paths/art-of-becoming" element={<TheArtOfBecoming />} />
+          <Route path="/speakers" element={<Speakers />} />
           <Route path="/register" element={<Register />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

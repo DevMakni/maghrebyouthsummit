@@ -177,9 +177,12 @@ const Navbar = () => {
             )}
           </div>
 
-          <span className={placeholderClass}>
-            {t.speakers}<ComingSoonBadge label={t.comingSoon} />
-          </span>
+          <button
+            onClick={() => { navigate("/speakers"); }}
+            className="flex items-center gap-1 text-sm font-medium text-white/70 hover:text-white transition-colors duration-150"
+          >
+            {t.speakers}
+          </button>
           <span className={placeholderClass}>
             {t.exposant}<ComingSoonBadge label={t.comingSoon} />
           </span>
@@ -297,11 +300,15 @@ const Navbar = () => {
             )}
           </div>
 
-          {[t.speakers, t.exposant].map((label) => (
-            <div key={label} className="flex items-center gap-2 text-sm text-white/30">
-              {label}<ComingSoonBadge label={t.comingSoon} />
-            </div>
-          ))}
+          <button
+            onClick={() => { navigate("/speakers"); setMobileOpen(false); }}
+            className="flex items-center gap-2 text-sm text-white/70 hover:text-white transition-colors"
+          >
+            {t.speakers}
+          </button>
+          <div className="flex items-center gap-2 text-sm text-white/30">
+            {t.exposant}<ComingSoonBadge label={t.comingSoon} />
+          </div>
 
           {/* Mobile language switcher */}
           <div className="flex items-center gap-2 pt-1">

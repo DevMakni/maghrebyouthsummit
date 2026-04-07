@@ -25,6 +25,8 @@ const pad = (n: number) => String(n).padStart(2, "0");
 
 const EVENT_DATE = new Date("2026-04-10T00:00:00");
 const PAYMENT_CLOSE = new Date("2026-04-05T23:59:59");
+// April 8 2026 18:00 Tunisia time (UTC+1)
+const PAYMENT_DEADLINE = new Date("2026-04-08T17:00:00Z");
 
 interface CountdownRowProps {
   label: string;
@@ -90,6 +92,15 @@ const CountdownSection = () => {
   const { lang } = useLanguage();
   const t = translations[lang].countdown;
   const unitLabels = { days: t.days, hours: t.hours, minutes: t.minutes, seconds: t.seconds };
+  const [paymentClosed, setPaymentClosed] = useState(() => new Date() >= PAYMENT_DEADLINE);
+
+  useEffect(() => {
+    if (paymentClosed) return;
+    const id = setInterval(() => {
+      if (new Date() >= PAYMENT_DEADLINE) { setPaymentClosed(true); clearInterval(id); }
+    }, 1000);
+    return () => clearInterval(id);
+  }, [paymentClosed]);
   return (
   <section className="relative py-20 md:py-28">
     <div className="absolute inset-0 section-overlay" />
@@ -105,20 +116,24 @@ const CountdownSection = () => {
           {t.dontMissOut}
         </h2>
 
-        {/* Payment deadline â€” accent style */}
+        {/* Payment info banner */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.15 }}
+          className={`rounded-2xl px-6 py-6 md:px-10 md:py-8 ring-1 shadow-lg text-center space-y-2 ${
+            paymentClosed
+              ? "bg-red-500/10 ring-red-500/30 shadow-red-500/10"
+              : "bg-primary/15 ring-primary/30 shadow-primary/10"
+          }`}
         >
-          <CountdownRow
-            label={t.paymentClosing}
-            subtitle={t.paymentDate}
-            target={PAYMENT_CLOSE}
-            accent
-            unitLabels={unitLabels}
-          />
+          <h3 className="font-display font-bold text-lg md:text-xl tracking-wide uppercase text-white">
+            {paymentClosed ? t.paymentClosedTitle : t.paymentInfo}
+          </h3>
+          <p className="text-sm md:text-base text-white/70 leading-relaxed max-w-xl mx-auto">
+            {paymentClosed ? t.paymentClosedDetails : t.paymentDetails}
+          </p>
         </motion.div>
 
         {/* Event date */}
